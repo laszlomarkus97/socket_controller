@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+
+
+    <div id="myDiv"></div>
+    <script>
+
+        var trace1 = {
+        x: [],
+        y: [],
+        type: 'scatter'
+        };
+
+        var data = [trace1];
+
+        Plotly.newPlot('myDiv', data);
+
+        
+        setInterval(function(){
+            Plotly.restyle('myDiv', 'x', [Array(sensorData.length).keys()]);
+            Plotly.restyle('myDiv', 'y', [sensorData]);
+        }      
+        ,10);
+
+        var sensorData = [];
+        // socket
+        $(function () {
+        var socket = io();
+        socket.on('browser-data', function(msg){
+            sensorData.push(msg);
+            console.log(msg)
+        });
+        });
+    </script>
+  </body>
+</html>
